@@ -1,2 +1,2 @@
 # pyfrac
-fractions in python
+Fractions in python

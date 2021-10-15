@@ -9,17 +9,19 @@ class frac:
                     (len(str(num.imag)) - str(num.imag).find('.') - 1) <= 17, \
                     "TooSmallError: frac contains too small numbers and can not be reduced."
             elif type(num) == float:
-                assert (len(str(num)) - str(num).find('.')) <= 17, \
+                assert (len(str(num)) - str(num).find('.') - 1) <= 17, \
                     "TooSmallError: frac contains too small numbers and can not be reduced."
+        if len(nums) == 0:
+            nums = (0, 1)
         self.num = 0
         '''Do not modify this in the way like self.num = 0'''
         self.den = 1
-        '''Do not modify this in the way like self.num = 0'''
+        '''Do not modify this in the way like self.den = 0'''
         self.reduce(nums)
         del nums
     
     # "{}".format(self)
-    def __format__(self, format_spec: str) -> str:
+    def __format__(self, format_spec:str) -> str:
         return "{} / {}".format(self.num, self.den)
 
     # abs(self)
@@ -29,9 +31,6 @@ class frac:
     # bool(self)
     def __bool__(self) -> bool:
         return bool(self.num)
-    
-    '''def __divmod__(self, x: int) -> Tuple[int, int]:
-        return super().__divmod__(x)'''
 
     # int(self)
     def __int__(self) -> int:
@@ -251,7 +250,8 @@ class frac:
         assert type(o) in (int, float, frac), \
             "TypeError: '>' not supported between instances of 'frac' and '{}'".format(type(o))
         assert type(self.num) != complex, \
-            "TypeError: '>' not supported between instances of 'frac' with complex and '{}'".format(type(o))
+            "TypeError: '>' not supported between instances of 'frac' with complex and '{}'"\
+                .format(type(o))
         if type(o) != frac: tmp = frac(o)
         else:               tmp = o
         return self.num * tmp.den > tmp.num * self.den
@@ -261,7 +261,8 @@ class frac:
         assert type(o) in (int, float, frac), \
             "TypeError: '>=' not supported between instances of 'frac' and '{}'".format(type(o))
         assert type(self.num) != complex, \
-            "TypeError: '>=' not supported between instances of 'frac' with complex and '{}'".format(type(o))
+            "TypeError: '>=' not supported between instances of 'frac' with complex and '{}'"\
+                .format(type(o))
         if type(o) != frac: tmp = frac(o)
         else:               tmp = o
         return self.num * tmp.den >= tmp.num * self.den
@@ -271,7 +272,8 @@ class frac:
         assert type(o) in (int, float, frac), \
             "TypeError: '<' not supported between instances of 'frac' and '{}'".format(type(o))
         assert type(self.num) != complex, \
-            "TypeError: '<' not supported between instances of 'frac' with complex and '{}'".format(type(o))
+            "TypeError: '<' not supported between instances of 'frac' with complex and '{}'"\
+                .format(type(o))
         if type(o) != frac: tmp = frac(o)
         else:               tmp = o
         return self.num * tmp.den < tmp.num * self.den
@@ -281,7 +283,8 @@ class frac:
         assert type(o) in (int, float, frac), \
             "TypeError: '<=' not supported between instances of 'frac' and '{}'".format(type(o))
         assert type(self.num) != complex, \
-            "TypeError: '<=' not supported between instances of 'frac' with complex and '{}'".format(type(o))
+            "TypeError: '<=' not supported between instances of 'frac' with complex and '{}'"\
+                .format(type(o))
         if type(o) != frac: tmp = frac(o)
         else:               tmp = o
         return self.num * tmp.den <= tmp.num * self.den
@@ -295,11 +298,13 @@ class frac:
             tmp = o
         if type(self.num) == complex:
             if type(tmp.num) == complex:
-                return frac((int(self.num.real) | int(tmp.num.real)) + (int(self.num.imag) | int(tmp.num.imag)) * 1j,
+                return frac((int(self.num.real) | int(tmp.num.real)) + \
+                    (int(self.num.imag) | int(tmp.num.imag)) * 1j,
                     self.den | tmp.den
                 )
             else:
-                return frac((int(self.num.rea) | tmp.num) + int(self.num.imag) * 1j, self.den | tmp.den)
+                return frac((int(self.num.rea) | tmp.num) + \
+                    int(self.num.imag) * 1j, self.den | tmp.den)
         else:
             if type(tmp.num) == complex:
                 return frac((self.num | int(tmp.num.real)) + int(tmp.num.imag) * 1j,
@@ -316,11 +321,13 @@ class frac:
             tmp = o
         if type(self.num) == complex:
             if type(tmp.num) == complex:
-                return frac(int(self.num.real) & int(tmp.num.real) + (int(self.num.imag) & int(tmp.num.imag)) * 1j,
+                return frac(int(self.num.real) & int(tmp.num.real) + \
+                    (int(self.num.imag) & int(tmp.num.imag)) * 1j,
                     self.den & tmp.den
                 )
             else:
-                return frac(int(self.num.real) & tmp.num + int(self.num.imag) * 1j, self.den & tmp.den)
+                return frac(int(self.num.real) & tmp.num + \
+                    int(self.num.imag) * 1j, self.den & tmp.den)
         else:
             if type(tmp.num) == complex:
                 return frac(self.num & int(tmp.num.real) + int(tmp.num.imag) * 1j,
@@ -339,11 +346,13 @@ class frac:
             tmp = o
         if type(self.num) == complex:
             if type(tmp.num) == complex:
-                return frac(int(self.num.real) ^ int(tmp.num.real) + (int(self.num.imag) ^ int(tmp.num.imag)) * 1j,
+                return frac(int(self.num.real) ^ int(tmp.num.real) + \
+                    (int(self.num.imag) ^ int(tmp.num.imag)) * 1j,
                     self.den ^ tmp.den
                 )
             else:
-                return frac(int(self.num.real) ^ tmp.num + int(self.num.imag) * 1j, self.den ^ tmp.den)
+                return frac(int(self.num.real) ^ tmp.num + \
+                    int(self.num.imag) * 1j, self.den ^ tmp.den)
         else:
             if type(tmp.num) == complex:
                 return frac(self.num ^ int(tmp.num.real) + int(tmp.num.imag) * 1j,
@@ -360,7 +369,7 @@ class frac:
     # it works in a complex way
     # please do not modify it if you do not understand how it works
     def reduce(self, nums:tuple):
-        '''Do not use this method if nothing is wrong'''
+        '''DO NOT use this method if nothing is wrong'''
         # initialize num
         if type(nums[0]) == frac:
             self.num = nums[0].num
@@ -382,15 +391,20 @@ class frac:
                     numrealstr = numrealstr[:-1]
                 if numimagstr[-1] == '0':
                     numimagstr = numimagstr[:-1]
-                if (len(numrealstr) - numrealstr.find('.') - 1) > (len(numimagstr) - numimagstr.find('.') - 1):
-                    self.num = int(numrealstr.replace('.', '')) + int(numimagstr.replace('.', '') + '0' * \
-                        (len(numrealstr) - numrealstr.find('.' - (len(numimagstr) - numimagstr.find('.'))))) * 1j
-                    self.den = 10 ** (len(numrealstr) - numrealstr.find('.') - 1)
+                if (len(numrealstr) - numrealstr.find('.')) > (len(numimagstr) - numimagstr.find('.')):
+                    self.num = int(numrealstr.replace('.', '')) + \
+                        int(numimagstr.replace('.', '') + \
+                        '0' * (len(numrealstr) - numrealstr.find('.') - \
+                        len(numimagstr) + numimagstr.find('.'))) * 1j
+                    self.den = 10 ** (len(numrealstr) - numrealstr.find('.') - \
+                        len(numimagstr) + numimagstr.find('.'))
                 else:
-                    self.num = int(numrealstr.replace('.', '') + '0' * \
-                        (len(numimagstr) - numimagstr.find('.') - 1)) + \
-                        int(numimagstr.replace('.', '')) * 1j
-                    self.den = 10 ** (len(numimagstr) - numimagstr.find('.') - 1)
+                    self.num = int(numrealstr.replace('.', '')) + \
+                        int(numimagstr.replace('.', '') + \
+                        '0' * (len(numimagstr) - numimagstr.find('.') - \
+                        len(numrealstr) + numrealstr.find('.'))) * 1j
+                    self.den = 10 ** (len(numimagstr) - numimagstr.find('.') - \
+                        len(numrealstr) + numrealstr.find('.'))
                 del numrealstr, numimagstr
         elif type(nums[0]) == float:
             numstr = str(nums[0])
@@ -407,23 +421,48 @@ class frac:
         # initialize den
         for num in nums[1:]:
             if type(num) == float:
-                # to integer
-                while (num % 1):
-                    num *= 10
-                # package den
-                self.den *= int(num) 
+                if num % 1:
+                    numstr = str(num)
+                    if numstr[-1] == '0':
+                        numstr = numstr[:-1]
+                    self.num *= 10 ** (len(numstr) - numstr.find('.') - 1)
+                    self.den *= int(numstr.replace('.', ''))
+                    del numstr
+                else:
+                    self.den *= int(numstr)
             elif type(num) == complex:
                 # to integer
-                while (num.real % 1 or num.imag % 1):
-                    num *= 10
-                # package den
-                self.den *= num
+                if (num.real % 1 or num.imag % 1):
+                    numrealstr = str(num.real)
+                    numimagstr = str(num.imag)
+                    if numrealstr[-1] == '0':
+                        numrealstr = numrealstr[:-1]
+                    if numimagstr[-1] == '0':
+                        numimagstr = numimagstr[:-1]
+                    if (len(numrealstr) - numrealstr.find('.')) > (len(numimagstr) - numimagstr.find('.')):
+                        self.den = int(numrealstr.replace('.', '')) + \
+                            int(numimagstr.replace('.', '') + \
+                            '0' * (len(numrealstr) - numrealstr.find('.') - \
+                            len(numimagstr) + numimagstr.find('.'))) * 1j
+                        self.num = 10 ** (len(numrealstr) - numrealstr.find('.') - \
+                            len(numimagstr) + numimagstr.find('.'))
+                    else:
+                        self.den = int(numrealstr.replace('.', '')) + \
+                            int(numimagstr.replace('.', '') + \
+                            '0' * (len(numimagstr) - numimagstr.find('.') - \
+                            len(numrealstr) + numrealstr.find('.'))) * 1j
+                        self.num = 10 ** (len(numimagstr) - numimagstr.find('.') - \
+                            len(numrealstr) + numrealstr.find('.'))
+                    del numrealstr, numimagstr
+                else:
+                    # package den
+                    self.den *= num
                 # to integer if no longer complex
                 if self.den.imag == 0:
                     self.den = int(self.den.real)
             elif type(num) == int:
                 self.den *= num
-            else: # if num is frac
+            elif type(num) == frac: # if num is frac
                 self.num *= num.den # if is frac, no need to do integer convertion, just multiply is ok
                 self.den *= num.num
                 # if num.num is complex, check if no longer complex
@@ -447,65 +486,25 @@ class frac:
             self.den = 1
         else:
             if type(self.num) == complex and (1 not in (abs(self.num.real), abs(self.num.imag), self.den)):
-                # pre-reduce with 2
-                while self.num.real % 2 == 0 and self.num.imag % 2 == 0 and self.den % 2 == 0:
-                    self.num = self.num.real // 2 + self.num.imag //2
-                    self.den //= 2
-                # pre-reduce with smallest one
-                # "a and min(b, c) or a and min(a, b, c)" means
-                # if a is 0, return min(b, c)
-                # if a is not 0, return min(a, b, c)
-                tmp = self.num.real == 0 and min(abs(self.num.imag), self.den) or \
-                    (self.num.real != 0 and min(abs(self.num.real), abs(self.num.imag), self.den))
-                if self.num.real % tmp and self.num.imag % tmp and self.den % tmp and \
-                    1 not in (abs(self.num.real), abs(self.num.imag), self.den) and \
-                    2 not in (abs(self.num.real), abs(self.num.imag), self.den):
-                    self.num = self.num.real // tmp + (self.num.imag // tmp) * 1j
-                    self.den //= tmp
-                # deal with other figure
-                elif 2 not in (abs(self.num.real), abs(self.num.imag), self.den):
-                    tmp = 3
-                    while tmp < ((self.num.real == 0 and min(self.num.imag, self.den) or \
-                    (self.num.real != 0 and min(self.num.real, self.num.imag, self.den))) ** 0.5  + 1):
-                        if self.num.real % tmp == 0 and self.num.imag % tmp == 0 and self.den % tmp == 0:
-                            # check another figure
-                            tmp2 = (self.num.real == 0 and min(abs(self.num.imag), self.den) or \
-                                (self.num.real != 0 and min(abs(self.num.real), abs(self.num.imag), self.den))) // tmp
-                            # keep divide while still can be
-                            while self.num.real % tmp2 == 0 and self.num.imag % tmp2 == 0 and self.den % tmp2 == 0:
-                                self.num = self.num.real // tmp2 + (self.num.imag // tmp2) * 1j
-                                self.den //= tmp2
-                            del tmp2
-                        # keep divide while still can be
-                        while self.num.real % tmp == 0 and self.num.imag % tmp == 0 and self.den % tmp == 0:
-                            self.num = self.num.real // tmp + (self.num.imag // tmp) * 1j
-                            self.den //= tmp
-                        tmp += 2
-                    del tmp
+                tmpdiv = frac.getmaxdiv((int(abs(self.num.real)), int(abs(self.num.imag)), int(self.den)))
+                self.num = self.num.real // tmpdiv + self.num.imag // tmpdiv
+                self.den //= tmpdiv
+                del tmpdiv
             elif 1 not in (abs(self.num), self.den):
-                # pre-reduce with 2
-                while self.num % 2 == 0 and self.den % 2 == 0:
-                    self.num //= 2
-                    self.den //= 2
-                # pre-reduce with smallest one65
-                tmp = min((abs(self.num), self.den))
-                if 1 not in (abs(self.num), self.den) and 2 not in (abs(self.num), self.den) and \
-                    self.num % tmp == 0 and self.den % tmp == 0:
-                    self.num //= tmp
-                    self.den //= tmp
-                # reduce with other figure
-                elif 2 not in (abs(self.num), self.den):
-                    tmp = 3
-                    while tmp < (min(abs(self.num), self.den) ** 0.5 + 1):
-                        if self.num % tmp == 0 and self.den % tmp == 0:
-                            tmp2 = min(abs(self.num), self.den) // tmp
-                            while self.num % tmp2 == 0 and self.den % tmp2 == 0:
-                                self.num //= tmp2
-                                self.den //= tmp2
-                            del tmp2
-                        while self.num % tmp == 0 and self.den % tmp == 0:
-                            self.num //= tmp
-                            self.den //= tmp
-                        tmp += 2
-                del tmp
+                tmpdiv = frac.getmaxdiv((abs(self.num), self.den))
+                self.num //= tmpdiv
+                self.den //= tmpdiv
+        
+        # return
         return self
+    
+    def getmaxdiv(nums):
+        if 0 in nums:
+            return max(nums)
+        else:
+            nums = sorted(nums)
+            output = [nums[0]]
+            for num in nums[1:]:
+                output.append(num % nums[0])
+            output = tuple(output)
+            return frac.getmaxdiv(output)

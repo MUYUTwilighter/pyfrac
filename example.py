@@ -1,6 +1,6 @@
 # import
 # 导入
-from fraction import *
+from pyfrac import *
 
 '''Fraction class manual
 search your problems with "Ctrl+F", like "call numerator"'''

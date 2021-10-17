@@ -1,6 +1,8 @@
 # import
 # 导入
-from pyfrac import *
+from pyfrac import * # you must import this
+from math import ceil # not necessary
+
 
 '''Fraction class manual
 search your problems with "Ctrl+F", like "call numerator"'''
@@ -9,10 +11,14 @@ search your problems with "Ctrl+F", like "call numerator"'''
 
 '''Create a fraction'''
 '''创建一个分数'''
+# create a fraction with no input, return frac(0, 1), which means zero fisrt
+# 无输入创建一个分数，会返回分数 frac(0, 1)，意思是零分之一
+fracNone = frac()
+
 # input a num, will reduce automatically
 # 输入一个数字，它会自动化简
 # the denominator will always be positive and not complex
-# 化简结果中分母永远为正且不是复数
+# 化简结果中分母永远为正实数
 frac0 = frac(0.5)
 print(frac0)
 # >>> frac(1, 2)
@@ -41,13 +47,16 @@ frac4 = frac(frac1, frac2)
 print(frac4)
 # frac(3, 2)
 
-# Tags: take too long, crash, run slowly
+# Tags: take too long, crash, run slowly, error output
 # 标签：花费时间过长，崩溃，程序跑得慢
 # what you SHOULD NOT do
 # 请 别 脑 抽 这 么 干
 # frac5 = frac(1 / 3)
-# the input is actually a complex float, will take quite a while to be reduced
-# 输入的数字实际上是个过于复杂的小数，会花上很久来化简
+# the input is actually a complex float, will return a complex fraction as well, not frac(1, 3)
+# 输入的数字实际上是个过于复杂的小数，返回的也是个很复杂的小数，而不是frac(1, 3)
+# please do like this
+# 请这样做
+frac5 = frac(1, 3)
 
 
 '''Call'''
@@ -63,18 +72,18 @@ print(frac4)
 # 标签：调用内容
 # to call the fraction, a tuple(numerator, denominator) will be returned
 # 引用这个分数，会返回一个包含分子和分母的元组
-frac1()
+print(frac1())
 # (1, 4)
 
 # Tags: call numerator, call denominator
 # 标签：调用分子，调用分母
 # to get specific content of the fraction, input index
 # 要获取一个分数中某个数，输入索引值
-frac1(0) # en: call numerator; zh: 调用分子
+print(frac1(0)) # en: call numerator; zh: 调用分子
 # 1
-frac1(1) # en: call denominator; zh: 调用分母
+print(frac1(1)) # en: call denominator; zh: 调用分母
 # 4
-frac1(2) # en: same as frac1(); zh: 作用与frac1()相同
+print(frac1(2)) # en: same as frac1(); zh: 作用与frac1()相同
 
 '''Transform'''
 '''转换'''
@@ -86,14 +95,14 @@ frac1(2) # en: same as frac1(); zh: 作用与frac1()相同
 # 如果这个分数包含复数，会报错
 # will not change the fractions itself
 # 不会改变这个分数本身
-int(frac0)
+print(int(frac0))
 # 0
 
 # Tags: transform to float
 # 标签：转换成浮点小数
 # much like integer transform, read that above instead
 # 和整数转换极为相似，可以直接参照它（就在上面贴贴）
-float(frac0)
+print(float(frac0))
 # 0.5
 
 # Tags: transform to complex
@@ -102,7 +111,7 @@ float(frac0)
 # 直接像转换一个浮点小数到复数一样使用complex()即可
 # will not change the fractions itself
 # 不会改变这个分数本身
-complex(frac0)
+print(complex(frac0))
 # (0.5 + 0j)
 
 # Tags: transform to boolean
@@ -111,7 +120,7 @@ complex(frac0)
 # 直接像转换一个浮点小数到布尔类型一样使用bool()即可
 # will not change the fractions itself
 # 不会改变这个分数本身
-bool(frac0)
+print(bool(frac0))
 # True
 # if numerator is 0, return False
 # 如果分子为0，返回False
@@ -145,7 +154,7 @@ frac0 // 0.25
 
 frac0 % frac1
 frac0 % 0.25
-# 0
+# frac(0, 1)
 
 frac0 ** 2
 # frac(1, 4)
@@ -153,7 +162,49 @@ frac0 ** 2
 frac1 ** frac0
 # frac(1, 2)
 
+# some operations of functions
+# 一些函数运算
+# calculate numerator / denominator
+# 计算 分子/分母
+frac0.calc()
+# 0.5
+
+# abs() to get module
+# 用abs()函数取模
+abs(frac0)
+# 0.5
+
+# take floor and mod
+# 同时整除并取余
+divmod(frac0, 1)
+# (0, frac(1, 2))
+
+# take ceil of the fraction
+# 向上取整
+ceil(frac0)
+# 1
+
+
 # comparison operation is also supported
 # 比较运算符同样支持
 # >, >=, <, <=, do not support complex or fracctions with complex
 # 注意 >, >=, <, <= 不支持复数或含有复数的分数即可
+
+# bit operation is supported
+# 支持位运算符
+# every number that matches will operate together
+# 对应的数字相互运算
+# every number that operates with fractions will be converted into fraction
+# 与分数相运算的数字会先转换成分数
+
+'''String Convertion'''
+'''字符串转换'''
+# str() function
+# str() 函数
+str(frac0)
+# "1 / 2"
+
+# string format
+# 格式化字符串
+"{}".format(frac0)
+# "1 / 2"

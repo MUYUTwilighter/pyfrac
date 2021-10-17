@@ -492,7 +492,7 @@ class frac:
                 self.num = self.num.real // tmpdiv + self.num.imag // tmpdiv
                 self.den //= tmpdiv
                 del tmpdiv
-            elif 1 not in (abs(self.num), self.den):
+            elif type(self.num) != complex and 1 not in (abs(self.num), self.den):
                 tmpdiv = frac.getmaxdiv((abs(self.num), self.den))
                 self.num //= tmpdiv
                 self.den //= tmpdiv
@@ -514,4 +514,3 @@ class frac:
             del num
             output = tuple(output)
             return frac.getmaxdiv(output)
- 

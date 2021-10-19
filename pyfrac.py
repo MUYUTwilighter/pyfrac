@@ -1,23 +1,33 @@
 class frac:
     def __init__(self, *nums) -> None:
-        for num in nums:
-            assert type(num) in (int, float, complex, frac), \
-                "TypeError: Can only convert int, float, complex or frac to frac"
-            assert num != 0, "ZeroDivisionError: division by zero"
-            if type(num) == complex:
-                assert (len(str(num.real)) - str(num.real).find('.') - 1) <= 17 and \
-                    (len(str(num.imag)) - str(num.imag).find('.') - 1) <= 17, \
-                    "TooSmallError: frac contains too small numbers and can not be reduced."
-            elif type(num) == float:
-                assert (len(str(num)) - str(num).find('.') - 1) <= 17, \
-                    "TooSmallError: frac contains too small numbers and can not be reduced."
-        if len(nums) == 0:
-            nums = (0, 1)
         self.num = 0
         '''Do not modify this in the way like self.num = 0'''
         self.den = 1
         '''Do not modify this in the way like self.den = 0'''
-        self.reduce(nums)
+        if len(nums) != 0:
+            if nums[0] != 0:
+                assert type(nums[0]) in (int, float, complex, frac), \
+                    "TypeError: Can only convert int, float, complex or frac to frac"
+                if type(nums[0]) == complex:
+                    assert (len(str(nums[0].real)) - str(nums[0].real).find('.') - 1) <= 17 and \
+                        (len(str(nums[0].imag)) - str(nums[0].imag).find('.') - 1) <= 17, \
+                        "TooSmallError: frac contains too small numbers and can not be reduced."
+                elif type(nums[0]) == float:
+                    assert (len(str(nums[0])) - str(nums[0]).find('.') - 1) <= 17, \
+                        "TooSmallError: frac contains too small numbers and can not be reduced."
+                if len(nums) > 1:
+                    for num in nums[1:]:
+                        assert type(num) in (int, float, complex, frac), \
+                            "TypeError: Can only convert int, float, complex or frac to frac"
+                        assert num != 0, "ZeroDivisionError: division by zero"
+                        if type(num) == complex:
+                            assert (len(str(num.real)) - str(num.real).find('.') - 1) <= 17 and \
+                                (len(str(num.imag)) - str(num.imag).find('.') - 1) <= 17, \
+                                "TooSmallError: frac contains too small numbers and can not be reduced."
+                        elif type(num) == float:
+                            assert (len(str(num)) - str(num).find('.') - 1) <= 17, \
+                                "TooSmallError: frac contains too small numbers and can not be reduced."
+                self.reduce(nums)
         del nums
     
     # "{}".format(self)
@@ -167,45 +177,37 @@ class frac:
     def __mod__(self, other):
         assert type(other) in (int, float, frac), \
             "TypeError: unsupported operand type(s) for %: 'frac' and '{}'".format(type(other))
-        assert type(self.num) != complex, \
-            "TypeError: Cannot mod a fraction with complex"
+        assert type(self.num) != complex, "TypeError: Cannot mod a fraction with complex"
         if type(other) != frac:
-            tmp = frac(other)
-        else:
-            tmp = other
-        assert type(tmp.num) != complex, \
-            "TypeError: Cannot mod a fraction with complex"
-        return frac((self.num * tmp.den) % (self.den * tmp.den), self.den * tmp.den)
+            other = frac(other)
+        else: 
+            assert type(other.num) != complex, "TypeError: Cannot mod a fraction with complex"
+        return frac((self.num * other.den) % (self.den * other.num), self.den * other.den)
     
     def __rmod__(self, other):
         assert type(other) in (int, float, frac), \
             "TypeError: unsupported operand type(s) for %: 'frac' and '{}'".format(type(other))
-        assert type(self.num) != complex, \
-            "TypeError: Cannot mod a fraction with complex"
+        assert type(self.num) != complex, "TypeError: Cannot mod a fraction with complex"
         if type(other) != frac:
-            tmp = frac(other)
-        else:
-            tmp = other
-        assert type(tmp.num) != complex, \
-            "TypeError: Cannot mod a fraction with complex"
-        return frac((tmp.num * self.den ) % (tmp.den * self.num), self.den * tmp.den)
+            other = frac(other)
+        else: 
+            assert type(other.num) != complex, "TypeError: Cannot mod a fraction with complex"
+        return frac((other.num * self.den ) % (other.den * self.num), self.den * other.den)
     
     # **
     def __pow__(self, other) -> float:
         assert type(other) in (int, float, frac, complex), \
             "TypeError: unsupported operand type(s) for **: 'frac' and '{}'".format(type(other))
-        if type(other) == frac:
-            return self.num ** other.calc() / self.den ** other.calc()
-        else:
-            return self.num ** other / self.den ** other
+        if type(other) != frac:
+            other = frac(other)
+        return frac(self.num ** other.calc(),self.den ** other.calc())
 
     def __rpow__(self, other):
         assert type(other) in (int, float, frac, complex), \
             "TypeError: unsupported operand type(s) for **: 'frac' and '{}'".format(type(other))
-        if type(other) == frac:
-            return other.num ** self.calc() / other.den ** self.calc()
-        else:
-            return other ** self.calc()
+        if type(other) != frac:
+            other = frac(other)
+        return frac(other.num ** self.calc(), other.den ** self.calc())
     
     # divmod(self, x)
     def __divmod__(self, x: int) -> tuple:
@@ -232,18 +234,16 @@ class frac:
     # !=
     def  __ne__(self, o) -> bool:
         if type(o) in (int, float, frac, complex):
-            if type(o) != frac: tmp = frac(o)
-            else:               tmp = o
-            return self.num != tmp.num or self.den != tmp.den
+            if type(o) != frac: o = frac(o)
+            return self.num != o.num or self.den != o.den
         else:
             return True
 
     # ==
     def __eq__(self, o: object) -> bool:
         if type(o) in (int, float, frac, complex):
-            if type(o) != frac: tmp = frac(o)
-            else:               tmp = o
-            return self.num == tmp.num and self.den == tmp.den
+            if type(o) != frac: o = frac(o)
+            return self.num == o.num and self.den == o.den
         else:
             return False
     
@@ -254,9 +254,8 @@ class frac:
         assert type(self.num) != complex, \
             "TypeError: '>' not supported between instances of 'frac' with complex and '{}'"\
                 .format(type(o))
-        if type(o) != frac: tmp = frac(o)
-        else:               tmp = o
-        return self.num * tmp.den > tmp.num * self.den
+        if type(o) != frac: o = frac(o)
+        return self.num * o.den > o.num * self.den
     
     # >=
     def __ge__(self, o) -> bool:
@@ -265,9 +264,8 @@ class frac:
         assert type(self.num) != complex, \
             "TypeError: '>=' not supported between instances of 'frac' with complex and '{}'"\
                 .format(type(o))
-        if type(o) != frac: tmp = frac(o)
-        else:               tmp = o
-        return self.num * tmp.den >= tmp.num * self.den
+        if type(o) != frac: o = frac(o)
+        return self.num * o.den >= o.num * self.den
     
     # <
     def __lt__(self, o) -> bool:
@@ -276,9 +274,8 @@ class frac:
         assert type(self.num) != complex, \
             "TypeError: '<' not supported between instances of 'frac' with complex and '{}'"\
                 .format(type(o))
-        if type(o) != frac: tmp = frac(o)
-        else:               tmp = o
-        return self.num * tmp.den < tmp.num * self.den
+        if type(o) != frac: o = frac(o)
+        return self.num * o.den < o.num * self.den
     
     # <=
     def __le__(self, o) -> bool:
@@ -287,81 +284,78 @@ class frac:
         assert type(self.num) != complex, \
             "TypeError: '<=' not supported between instances of 'frac' with complex and '{}'"\
                 .format(type(o))
-        if type(o) != frac: tmp = frac(o)
-        else:               tmp = o
-        return self.num * tmp.den <= tmp.num * self.den
+        if type(o) != frac: o = frac(o)
+        return self.num * o.den <= o.num * self.den
     
     # bit operation
     # &
     def __or__(self, o):
+        assert type(o) in (int, float, complex, frac), \
+            "TypeError: unsupported operand type(s) for |: 'frac' and '{}}'".format(type(o))
         if type(o) != frac:
-            tmp = frac(o)
-        else:
-            tmp = o
+            o = frac(o)
         if type(self.num) == complex:
-            if type(tmp.num) == complex:
-                return frac((int(self.num.real) | int(tmp.num.real)) + \
-                    (int(self.num.imag) | int(tmp.num.imag)) * 1j,
-                    self.den | tmp.den
+            if type(o.num) == complex:
+                return frac((int(self.num.real) | int(o.num.real)) + \
+                    (int(self.num.imag) | int(o.num.imag)) * 1j,
+                    self.den | o.den
                 )
             else:
-                return frac((int(self.num.real) | tmp.num) + \
-                    int(self.num.imag) * 1j, self.den | tmp.den)
+                return frac((int(self.num.real) | o.num) + \
+                    int(self.num.imag) * 1j, self.den | o.den)
         else:
-            if type(tmp.num) == complex:
-                return frac((self.num | int(tmp.num.real)) + int(tmp.num.imag) * 1j,
-                    self.den | tmp.den
+            if type(o.num) == complex:
+                return frac((self.num | int(o.num.real)) + int(o.num.imag) * 1j,
+                    self.den | o.den
                 )
             else:
-                return frac(self.num | tmp.num, self.den | tmp.den)
+                return frac(self.num | o.num, self.den | o.den)
     
     # |
     def __and__(self, o):
+        assert type(o) in (int, float, complex, frac), \
+            "TypeError: unsupported operand type(s) for &: 'frac' and '{}}'".format(type(o))
         if type(o) == frac:
-            tmp = frac(o)
-        else:
-            tmp = o
+            o = frac(o)
         if type(self.num) == complex:
-            if type(tmp.num) == complex:
-                return frac(int(self.num.real) & int(tmp.num.real) + \
-                    (int(self.num.imag) & int(tmp.num.imag)) * 1j,
-                    self.den & tmp.den
+            if type(o.num) == complex:
+                return frac(int(self.num.real) & int(o.num.real) + \
+                    (int(self.num.imag) & int(o.num.imag)) * 1j,
+                    self.den & o.den
                 )
             else:
-                return frac(int(self.num.real) & tmp.num + \
-                    int(self.num.imag) * 1j, self.den & tmp.den)
+                return frac(int(self.num.real) & o.num + \
+                    int(self.num.imag) * 1j, self.den & o.den)
         else:
-            if type(tmp.num) == complex:
-                return frac(self.num & int(tmp.num.real),
-                    self.den & tmp.den
+            if type(o.num) == complex:
+                return frac(self.num & int(o.num.real),
+                    self.den & o.den
                 )
             else:
-                return frac(self.num & tmp.num, self.den & tmp.den)
+                return frac(self.num & o.num, self.den & o.den)
     
     # ^
     def __xor__(self, o):
         assert type(o) in (int, float, complex, frac), \
             "TypeError: unsupported operand type(s) for |: 'frac' and '{}}'".format(type(o))
         if type(o) == frac:
-            tmp = frac(o)
-        else:
-            tmp = o
+            o = frac(o)
         if type(self.num) == complex:
-            if type(tmp.num) == complex:
-                return frac(int(self.num.real) ^ int(tmp.num.real) + \
-                    (int(self.num.imag) ^ int(tmp.num.imag)) * 1j,
-                    self.den ^ tmp.den
+            if type(o.num) == complex:
+                return frac(int(self.num.real) ^ int(o.num.real) + \
+                    (int(self.num.imag) ^ int(o.num.imag)) * 1j,
+                    self.den ^ o.den
                 )
             else:
-                return frac(int(self.num.real) ^ tmp.num + \
-                    0 ^ int(self.num.imag) * 1j, self.den ^ tmp.den)
+                return frac(int(self.num.real) ^ o.num + \
+                    0 ^ int(self.num.imag) * 1j, self.den ^ o.den)
         else:
-            if type(tmp.num) == complex:
-                return frac(self.num ^ int(tmp.num.real) + 0 ^ int(tmp.num.imag) * 1j,
-                    self.den ^ tmp.den
+            if type(o.num) == complex:
+                return frac(self.num ^ int(o.num.real) + 0 ^ int(o.num.imag) * 1j,
+                    self.den ^ o.den
                 )
             else:
-                return frac(self.num ^ tmp.num, self.den ^ tmp.den)
+                return frac(self.num ^ o.num, self.den ^ o.den)
 
     # other function
     def calc(self) -> float or complex:
@@ -431,7 +425,7 @@ class frac:
                     self.den *= int(numstr.replace('.', ''))
                     del numstr
                 else:
-                    self.den *= int(numstr)
+                    self.den *= int(num)
             elif type(num) == complex:
                 # to integer
                 if (num.real % 1 or num.imag % 1):

@@ -21,31 +21,31 @@ fracNone = frac()
 # 化简结果中分母永远为正实数
 frac0 = frac(0.5)
 print(frac0)
-# >>> frac(1, 2)
+# 1 / 2
 
 # the numbers follow behind the first number will be seen as denominator
 # 第一个数之后的数字都会被认为是分母
 frac1 = frac(0.5, 2)
 print(frac1)
-# frac(1, 4)
+# 1 / 4
 
 # if more than one numbers are behind the first one, multiply them as denominator
 # 如果第一个数之后的数字超过一个，会将他们相乘作为分母
 frac2 = frac(1, 2, 3)
 print(frac2)
-# frac(1, 6)
+# 1 / 6
 
 # it support complex
 # 它支持复数
 frac3 = frac(1+0.5j, 2)
 print(frac3)
-# frac((2 + 1j), 4)
+# (2 + 1j) / 4
 
 # you can combine fractions
 # 你可以输入分数
 frac4 = frac(frac1, frac2)
 print(frac4)
-# frac(3, 2)
+# 3 / 2
 
 # Tags: take too long, crash, run slowly, error output
 # 标签：花费时间过长，崩溃，程序跑得慢
@@ -131,32 +131,32 @@ print(bool(frac0))
 # 标签：一般计算，加，减，乘，除，整除，取余，乘方
 # normal computing operations are all supported
 # 常见的运算都支持
-frac0 + frac1
+print(frac0 + frac1)
 frac0 + 0.25
-# frac(3, 4)
+# 3 / 4)
 
-frac0 - frac1
+print(frac0 - frac1)
 frac0 - 0.25
-# frac(1, 4)
+# 1 / 4
 
-frac0 / 2
-# frac(1, 4)
+print(frac0 / 2)
+# 1 / 4
 frac0 / frac1
-# frac(2, 1)
+# 2
 
-frac0 * frac1
-frac0 * 0.5
-# frac(1, 8)
+print(frac0 * frac1)
+frac0 * 0.25
+# 1 / 8
 
-frac0 // frac1
+print(frac0 // frac1)
 frac0 // 0.25
 # 2
 
-frac0 % frac1
+print(frac0 % frac1)
 frac0 % 0.25
 # frac(0, 1)
 
-frac0 ** 2
+print(frac0 ** 2)
 # frac(1, 4)
 # we support this but you'd better not do power with float like numbers
 frac1 ** frac0
@@ -166,22 +166,22 @@ frac1 ** frac0
 # 一些函数运算
 # calculate numerator / denominator
 # 计算 分子/分母
-frac0.calc()
+print(frac0.calc())
 # 0.5
 
 # abs() to get module
 # 用abs()函数取模
-abs(frac0)
+print(abs(frac0))
 # 0.5
 
 # take floor and mod
 # 同时整除并取余
-divmod(frac0, 1)
+print(divmod(frac0, 1))
 # (0, frac(1, 2))
 
 # take ceil of the fraction
 # 向上取整
-ceil(frac0)
+print(ceil(frac0))
 # 1
 
 
@@ -201,10 +201,10 @@ ceil(frac0)
 '''字符串转换'''
 # str() function
 # str() 函数
-str(frac0)
+print(str(frac0))
 # "1 / 2"
 
 # string format
 # 格式化字符串
-"{}".format(frac0)
+print("{}".format(frac0))
 # "1 / 2"

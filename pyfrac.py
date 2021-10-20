@@ -1,6 +1,3 @@
-from typing import Iterable
-
-
 class frac:
     def __init__(self, *nums) -> None:
         self.num = 0
@@ -500,7 +497,7 @@ class frac:
         # return
         return self
     
-    def getmaxdiv(nums:Iterable):
+    def getmaxdiv(nums):
         assert type(nums) in (set, list, tuple), "TypeError: expecting iterable type"
         if len(nums) == 1:
             return nums.pop()

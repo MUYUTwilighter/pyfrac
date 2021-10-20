@@ -208,3 +208,10 @@ print(str(frac0))
 # 格式化字符串
 print("{}".format(frac0))
 # "1 / 2"
+
+'''Other Functions'''
+'''其他函数'''
+# get greatest common divisor
+# 获取一组数的最大公约数
+print(frac.getmaxdiv(set((4, 6))))
+# 2

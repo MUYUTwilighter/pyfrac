@@ -1,3 +1,6 @@
+from typing import Iterable
+
+
 class frac:
     def __init__(self, *nums) -> None:
         self.num = 0
@@ -482,14 +485,14 @@ class frac:
             self.den = 1
         else:
             if type(self.num) == complex and (1 not in (abs(self.num.real), abs(self.num.imag), self.den)):
-                tmpdiv = frac.getmaxdiv((int(abs(self.num.real)), int(abs(self.num.imag)), int(self.den)))
+                tmpdiv = frac.getmaxdiv([int(abs(self.num.real)), int(abs(self.num.imag)), int(self.den)])
                 self.num = self.num.real // tmpdiv + (self.num.imag // tmpdiv) * 1j
                 if self.num.imag == 0:
                     self.num = int(self.num.real)
                 self.den //= tmpdiv
                 del tmpdiv
             elif type(self.num) != complex and 1 not in (abs(self.num), self.den):
-                tmpdiv = frac.getmaxdiv((abs(self.num), self.den))
+                tmpdiv = frac.getmaxdiv([abs(self.num), self.den])
                 self.num //= tmpdiv
                 self.den //= tmpdiv
                 del tmpdiv
@@ -497,17 +500,16 @@ class frac:
         # return
         return self
     
-    def getmaxdiv(nums):
-        nums = tuple(filter(lambda x: x != 0, nums))
+    def getmaxdiv(nums:Iterable):
+        assert type(nums) in (set, list, tuple), "TypeError: expecting iterable type"
         if len(nums) == 1:
-            return nums[0]
+            return nums.pop()
         else:
             nums = sorted(nums)
-            output = [nums[0]]
+            output = set(nums[0:1])
             for num in nums[1:]:
-                num = num % nums[0]
+                num %= nums[0]
                 if num:
-                    output.append(num)
-            del num
-            output = tuple(output)
+                    output.add(num % nums[0])
+            del num, nums
             return frac.getmaxdiv(output)
